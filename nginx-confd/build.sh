@@ -7,7 +7,7 @@ set -x              # Log commands to STDERR
 ######################################################################
 ### INSTALL NGINX
 
-## Update nginx first
+## Update apt first
 apt-get update
 
 ## Actually install
