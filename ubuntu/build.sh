@@ -53,6 +53,7 @@ locale-gen en_US
 ### INSTALL COMMON UTILITIES
 
 apt-get install \
+    ca-certificates \
     curl \
     git-core \
     less \
@@ -69,15 +70,15 @@ cp /build/setuser /sbin/setuser && chmod +x /sbin/setuser
 ## Remove useless cron entries (checks for lost+found and scans mtab)
 rm -f /etc/cron.daily/standard
 
+## Remove our dpkg hack (from above)
+rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup
+
 ## Clean apt
 apt-get clean
 rm -rf /var/lib/apt/lists/*
 
 ## Remove temp files
 rm -rf /tmp/* /var/tmp/*
-
-## Remove our dpkg hack (from above)
-rm -f /etc/dpkg/dpkg.cfg.d/02apt-speedup
 
 ## Finally, remove the entire /build directory (and ourselves)
 rm -rf /build
