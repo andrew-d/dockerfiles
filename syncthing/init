@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Run in our user's home directory
+export HOME=/home/syncthing
+cd $HOME
+
+# These directories should exist and be owned by the user
+for DIR in repos .config/syncthing; do
+    test -d $DIR || mkdir -p $DIR
+    chown syncthing:syncthing $DIR
+    chmod 750 $DIR
+done
+
+# Actually kickoff the sync
+exec su - syncthing -c /usr/local/bin/syncthing
