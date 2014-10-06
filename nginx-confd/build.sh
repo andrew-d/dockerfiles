@@ -16,6 +16,9 @@ apt-get install nginx
 ## Remove the default Nginx config file
 rm -f /etc/nginx/sites-enabled/default
 
+## Create directories that nginx expects
+mkdir -p /etc/nginx/ssl
+
 
 ######################################################################
 ### INSTALL CONFD
