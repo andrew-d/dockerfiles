@@ -20,7 +20,10 @@ rm -f /etc/nginx/sites-enabled/default
 ######################################################################
 ### INSTALL CONFD
 
-curl -L -o /usr/local/bin/confd 'https://github.com/kelseyhightower/confd/releases/download/v0.6.0-alpha3/confd-0.6.0-alpha3-linux-amd64'
+export CONFD_VERSION=0.6.0-beta1
+curl -L \
+    -o /usr/local/bin/confd \
+    "https://github.com/kelseyhightower/confd/releases/download/v${CONFD_VERSION}/confd-${CONFD_VERSION}-linux-amd64"
 chmod +x /usr/local/bin/confd
 
 
