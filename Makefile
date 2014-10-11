@@ -4,7 +4,7 @@ REBUILD ?= no
 
 BUILD_FLAGS :=
 ifeq ($(REBUILD),yes)
-	BUILD_FLAGS := $(BUILD_FLAGS) -no-cache
+	BUILD_FLAGS := $(BUILD_FLAGS) --no-cache
 endif
 
 # Rule to build a docker image from a directory
