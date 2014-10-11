@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Explanation:
+#   -D              Run in foreground
+#   -l /dev/stdout  Log to stdout
+#   -p 8080         Listen on port 8080
+#   -d /data        chdir() to /data before running
+#   -r              chroot() to the current dir
+
+/usr/local/bin/thttpd   \
+    -D                  \
+    -l /dev/stdout      \
+    -p 8080             \
+    -d /data            \
+    -r
