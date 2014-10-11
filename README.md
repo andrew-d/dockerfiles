@@ -8,11 +8,11 @@ Dockerfile follows:
 Name           | Short Description
 ---------------|--------------------------------------------------------------
 ubuntu         | The base image I use for "heavyweight" containers.
-ubuntu-build   | An extension of the `ubuntu` container with common build tools installed.
-syncthing      | A container that runs a [syncthing](http://syncthing.net/) instance.
+ubuntu-build   | An extension of the `ubuntu` image with common build tools installed.
+syncthing      | An image that runs a [syncthing](http://syncthing.net/) instance.
 nginx-confd    | Nginx in a container, automatically reconfigured with [confd][confd].
-sthttpd-build  | A small container that builds a statically-linked copy of [sthttpd][sthttpd].
-busybox        | The [progrium/busybox][bb] container, with cURL and root CA certificates.
+sthttpd-build  | A small image that builds a statically-linked copy of [sthttpd][sthttpd].
+busybox        | The [progrium/busybox][bb] image, with cURL and root CA certificates.
 
 
 
