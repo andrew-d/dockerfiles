@@ -13,6 +13,7 @@ syncthing      | An image that runs a [syncthing](http://syncthing.net/) instanc
 nginx-confd    | Nginx in a container, automatically reconfigured with [confd][confd].
 sthttpd-build  | A small image that builds a statically-linked copy of [sthttpd][sthttpd].
 busybox        | The [progrium/busybox][bb] image, with cURL and root CA certificates.
+sthttpd        | Based on busybox, serves the contents of `/data` with [sthttpd][sthttpd].  Weighs in at only 6.1MB!
 
 
 
