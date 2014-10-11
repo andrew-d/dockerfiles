@@ -60,6 +60,7 @@ apt-get install \
     nano \
     psmisc \
     python-software-properties \
+    software-properties-common \
     vim
 
 cp /build/setuser /sbin/setuser && chmod +x /sbin/setuser
