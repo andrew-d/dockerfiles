@@ -6,10 +6,6 @@
 ## Update opkg
 opkg-cl update
 
-## Move our functions.sh into place
-## NOTE: from https://dev.openwrt.org/browser/trunk/package/base-files/files/lib/functions.sh
-cp /build/functions.sh /lib/functions.sh
-
 ######################################################################
 ### INSTALL COMMON UTILITIES
 
