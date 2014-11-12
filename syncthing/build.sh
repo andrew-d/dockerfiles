@@ -7,7 +7,7 @@ set -x              # Log commands to STDERR
 ######################################################################
 ### INSTALL SYNCTHING
 
-export VERSION=v0.10.4
+export VERSION=v0.10.5
 export RELEASE=syncthing-linux-amd64-${VERSION}
 
 ## Download syncthing
