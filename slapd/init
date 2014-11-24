@@ -1,0 +1,50 @@
+#!/bin/sh
+
+set -e              # Shell exits immediately on error
+set -u              # Error if expanding an unset variable
+
+status () {
+    echo "-----> ${@}" >&2
+}
+
+# Configure slapd
+echo "LDAP_ROOTPASS=${LDAP_ROOTPASS}"
+echo "LDAP_DOMAIN=${LDAP_DOMAIN}"
+echo "LDAP_ORGANISATION=${LDAP_ORGANISATION}"
+
+if [ ! -e /var/lib/ldap/.bootstrapped ]; then
+    status "configuring slapd for first run"
+
+    cat <<EOF | debconf-set-selections
+slapd slapd/internal/generated_adminpw password ${LDAP_ROOTPASS}
+slapd slapd/internal/adminpw password ${LDAP_ROOTPASS}
+slapd slapd/password2 password ${LDAP_ROOTPASS}
+slapd slapd/password1 password ${LDAP_ROOTPASS}
+slapd slapd/dump_database_destdir string /var/backups/slapd-VERSION
+slapd slapd/domain string ${LDAP_DOMAIN}
+slapd shared/organization string ${LDAP_ORGANISATION}
+slapd slapd/backend string HDB
+slapd slapd/purge_database boolean true
+slapd slapd/move_old_database boolean true
+slapd slapd/allow_ldap_v2 boolean false
+slapd slapd/no_configuration boolean false
+slapd slapd/dump_database select when needed
+EOF
+
+else
+    status "slapd is already configured"
+fi
+
+# Ensure our file permissions are correct
+chown -R openldap:openldap /var/lib/ldap
+
+# NOTE: for some reason, inside a container, the ulimit for number of open
+# files is very large, which causes slapd to try to allocate too much memory,
+# which then triggers the OOM killer. We get around this by resetting the
+# ulimit to a sane value.
+ulimit -n 1024
+
+# Launch the application.
+status "starting slapd"
+set -x
+exec /usr/sbin/slapd -h "ldap:///" -u openldap -g openldap -d 0
