@@ -18,5 +18,4 @@ VOLUME ["/etc/nginx/sites-enabled", "/etc/nginx/certs", "/etc/nginx/conf.d", "/v
 # Expose the ports
 EXPOSE 80 443
 
-# This script kicks off confd and nginx
 CMD ["nginx"]

@@ -11,7 +11,7 @@ set -x              # Log commands to STDERR
 apt-get update
 
 ## Actually install
-apt-get install slapd
+apt-get install slapd ldap-utils
 
 
 ######################################################################
