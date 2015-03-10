@@ -1,4 +1,4 @@
-FROM andrewd/busybox
+FROM gliderlabs/alpine:3.1
 MAINTAINER Andrew Dunham <andrew@du.nham.ca>
 
 # Add our files to /build

@@ -23,7 +23,7 @@ apt-get install libssl-dev zlib1g-dev
 ######################################################################
 ### INSTALL MUSL
 
-export MUSL_VERSION=1.1.4
+export MUSL_VERSION=1.1.6
 
 ## Download
 cd /tmp
