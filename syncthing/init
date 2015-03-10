@@ -12,10 +12,4 @@ for DIR in repos .config/syncthing; do
 done
 
 # Actually kickoff the sync
-# Note:
-#   - We set the "don't restart" environment flag - whatever is monitoring this
-#     container can handle that.
-#   - We explicitly override the GUI address to bind on 0.0.0.0, since users of
-#     the container itself can decide where/how they want to expose it.
-#   - We tell Syncthing to not start a browser
-exec su - syncthing -c 'STNORESTART=yes STGUIADDRESS="http://0.0.0.0:8080" /usr/local/bin/syncthing -no-browser'
+exec su -c /usr/local/bin/run-syncthing - syncthing

@@ -1,4 +1,4 @@
-FROM andrewd/ubuntu
+FROM progrium/busybox
 MAINTAINER Andrew Dunham <andrew@du.nham.ca>
 
 # Expects to be run as:
