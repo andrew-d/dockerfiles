@@ -3,6 +3,23 @@
 set -e
 set -x
 
+ORIG_UID=1001
+ORIG_GID=1001
+
+# Configure users
+configure_users() {
+    # Add a new group
+    addgroup -g $ORIG_GID devgroup
+
+    # Add a new user
+    adduser                 \
+        -D                  \
+        -u $ORIG_UID        \
+        -G devgroup         \
+        -s /bin/sh          \
+        devuser
+}
+
 # Configure php-fpm
 configure_php_fpm() {
     # Configure php
@@ -15,6 +32,8 @@ configure_php_fpm() {
     #   - Do not daemonize
     sed -e 's|^listen\s*=.*$|listen = 127.0.0.1:9000|g'     \
             -e '/allowed_clients/d'                         \
+            -e 's/user\s*=\s*nobody/user = devuser/'        \
+            -e 's/group\s*=\s*nobody/group = devgroup/'     \
             -e '/catch_workers_output/s/^;//'               \
             -e '/error_log/d'                               \
             -e 's/;daemonize\s*=\s*yes/daemonize = no/g'    \
@@ -84,6 +103,7 @@ EOF
 
 # Configure supervisord
 configure_supervisord() {
+    # The supervisord configuration
     cat <<EOF > /etc/supervisord.conf
 [supervisord]
 nodaemon=true
@@ -92,8 +112,34 @@ nodaemon=true
 command=/usr/bin/php-fpm --nodaemonize
 
 [program:nginx]
-command=/bin/sh -c "mkdir -p /tmp/nginx && /usr/sbin/nginx -g 'daemon off;'"
+command=/usr/sbin/nginx -g 'daemon off;'
 EOF
+
+    # This is a giant hack.  On startup, we run this script which replaces the
+    # user and group IDs of our `devuser` with the values passed in.  This
+    # allows that user to then access the repositories that we were given.
+    cat <<EOF > /usr/local/bin/init
+#!/bin/sh
+
+set -e
+set -x
+
+# Get the group/user IDs we're 'impersonating'
+export DEV_UID=\${DEV_UID:=$ORIG_UID}
+export DEV_GID=\${DEV_GID:=$ORIG_GID}
+
+# Set the user/group of 'devuser' to the given values
+sed -i -e "s/:$ORIG_UID:$ORIG_GID:/:\$DEV_UID:\$DEV_GID:/" /etc/passwd
+sed -i -e "s/devuser:x:$ORIG_GID:/dockerdev:x:\$DEV_GID:/" /etc/group
+
+# Ensure that the directory nginx expects is present
+mkdir -p /tmp/nginx
+
+# Run supervisord
+exec /usr/bin/supervisord -c /etc/supervisord.conf
+EOF
+
+    chmod +x /usr/local/bin/init
 }
 
 # Install GitList
@@ -149,6 +195,7 @@ EOF
 
 
 doit() {
+    configure_users
     configure_php_fpm
     configure_nginx
     configure_supervisord

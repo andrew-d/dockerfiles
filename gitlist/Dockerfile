@@ -15,5 +15,4 @@ RUN apk-install                     \
 ADD ./build.sh /build.sh
 RUN /build.sh
 
-# Our command is 'supervisord'
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
+CMD ["/usr/local/bin/init"]
